@@ -1,1 +1,32 @@
 Jenkins setup for nodejs frontend code which is in bitbucket 
+
+
+Step 1: Create a ec2 server with user data to install jenkins on top of it (ami should be linux 2023{Amazon Linux 2 Kernel 5.10 AMI 2.0.20241014.0 x86_64 HVM gp2})
+pre-req: java 17, jenkins, git (this should be installed as part of userdata)
+
+user data:
+            #!/bin/bash
+            # Update system packages
+            sudo yum update -y
+            # Add Jenkins repository
+            sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+            # Import the Jenkins GPG key
+            sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+            # Upgrade installed packages
+            sudo yum upgrade -y
+            # Install Amazon Corretto 17
+            sudo wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.rpm
+            sudo yum localinstall -y amazon-corretto-17-x64-linux-jdk.rpm
+            # Set JAVA_HOME
+            echo "export JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto" | sudo tee -a /etc/profile
+            # Install the latest version of Jenkins
+            sudo yum install jenkins -y
+            # Enable and start the Jenkins service
+            sudo systemctl enable jenkins
+            sudo systemctl start jenkins
+            # Display the initial admin password
+            sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+            # Install Git
+            sudo yum install git -y
+
+Once you create the server u will be accessable to jenkins server on <public ip>:8080
