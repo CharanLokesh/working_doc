@@ -11,6 +11,7 @@ Steps to update the elastic ip
         cd /var/lib/jenkins/ 
         Modify jenkins.model.JenkinsLocationConfiguration.xml file by executing below command: (this file will be viewed only after installing jenkins and configuring it completly)
         sudo nano jenkins.model.JenkinsLocationConfiguration.xml
+check if this file has elatic ip or not if not change that to elastic ip which you have attached to ec2 server
         Make sure you provide Jenkins current URL in below location and restart Jenkins.
         sudo service jenkins restart
         Now try accessing Jenkins through UI, it will be really performing well.
